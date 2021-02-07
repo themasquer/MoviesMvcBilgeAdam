@@ -1,4 +1,5 @@
 ﻿using _036_MoviesMvcBilgeAdam.Contexts;
+using _036_MoviesMvcBilgeAdam.Entities;
 using _036_MoviesMvcBilgeAdam.Models;
 using System;
 using System.Linq;
@@ -43,6 +44,25 @@ namespace _036_MoviesMvcBilgeAdam.Services
                         MovieId = r.MovieId
                     }).ToList()
                 });
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+        }
+
+        public void Add(MovieModel model)
+        {
+            try
+            {
+                Movie entity = new Movie()
+                {
+                    Name = model.Name,
+                    BoxOfficeReturn = model.BoxOfficeReturn,
+                    ProductionYear = model.ProductionYear
+                };
+                _db.Movies.Add(entity);
+                _db.SaveChanges();
             }
             catch (Exception exc)
             {
