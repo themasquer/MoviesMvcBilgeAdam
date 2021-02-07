@@ -10,7 +10,7 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
     {
         public ActionResult Index()
         {
-            //return View();
+            //return View(); test
             return View("Welcome");
         }
 
