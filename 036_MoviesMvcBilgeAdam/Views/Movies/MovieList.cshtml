@@ -1,0 +1,62 @@
+﻿@model List<MovieModel>
+
+@{
+    ViewBag.Title = "Movie List";
+}
+
+<div class="paddingtop">
+    <h2>@ViewBag.Title</h2>
+
+    @*<a href="/Movies/Create">New Movie</a>*@
+    @*@Html.ActionLink("New Movie", "Create", "Movies")*@@* a tag'i oluşturan HTML Helper *@
+    @Html.ActionLink("New Movie", "Create")
+
+    <table class="table">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Production Year
+            </th>
+            <th>
+                Box Office Return
+            </th>
+            <th>
+                Directors
+            </th>
+        </tr>
+        @foreach (MovieModel movie in Model)
+        {
+            <tr>
+                <td>
+                    @movie.Name
+                </td>
+                <td>
+                    @movie.ProductionYear
+                </td>
+                <td>
+                    @movie.BoxOfficeReturn
+                </td>
+                <td>
+
+                    @*@foreach (DirectorModel director in movie.Directors)
+                        {
+                            @(director.Name + " " + director.Surname)
+                            <br />
+                        }*@
+                    @{
+                        string directors = "";
+                        foreach (DirectorModel director in movie.Directors)
+                        {
+                            directors += "<i>" + director.Name + " " + director.Surname + "</i><br />";
+                        }
+                    }
+                    @Html.Raw(directors) @* HTML helper: Parametre olarak gönderilen (directors) ve HTML içeriğe sahip olan veriyi HTML formatı ile gösterir *@
+
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
