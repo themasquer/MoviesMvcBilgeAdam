@@ -2,6 +2,7 @@
 using _036_MoviesMvcBilgeAdam.Entities;
 using _036_MoviesMvcBilgeAdam.Models;
 using System;
+using System.Data.Entity;
 using System.Linq;
 
 namespace _036_MoviesMvcBilgeAdam.Services
@@ -62,6 +63,23 @@ namespace _036_MoviesMvcBilgeAdam.Services
                     ProductionYear = model.ProductionYear
                 };
                 _db.Movies.Add(entity);
+                _db.SaveChanges();
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+        }
+
+        public void Update(MovieModel model)
+        {
+            try
+            {
+                Movie entity = _db.Movies.Find(model.Id);
+                entity.Name = model.Name;
+                entity.BoxOfficeReturn = model.BoxOfficeReturn;
+                entity.ProductionYear = model.ProductionYear;
+                _db.Entry(entity).State = EntityState.Modified;
                 _db.SaveChanges();
             }
             catch (Exception exc)

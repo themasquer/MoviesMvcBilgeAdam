@@ -5,12 +5,15 @@ namespace _036_MoviesMvcBilgeAdam.Models
 {
     public class MovieModel
     {
+        //todo: Validasyon mesajlarının özelleştirilmesi
+
         public int Id { get; set; }
 
         [Required]
         [StringLength(250)]
         public string Name { get; set; }
 
+        [Required]
         [StringLength(4)]
         public string ProductionYear { get; set; }
 

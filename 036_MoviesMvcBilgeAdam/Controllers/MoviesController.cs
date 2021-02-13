@@ -5,6 +5,7 @@ using _036_MoviesMvcBilgeAdam.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 
 namespace _036_MoviesMvcBilgeAdam.Controllers
@@ -101,6 +102,10 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(Name))
+                    return Content("Name must not be empty.");
+                if (Name.Length > 250)
+                    return Content("Name must have maximum 250 characters.");
                 MovieModel model = new MovieModel()
                 {
                     Name = Name,
@@ -111,6 +116,100 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
 
                 //return RedirectToAction("List", "Movies");
                 return RedirectToAction("List");
+            }
+            catch (Exception exc)
+            {
+                return View("_Exception");
+            }
+        }
+
+        public ActionResult Details(int? id)
+        {
+            try
+            {
+                //if (id == null)
+                if (!id.HasValue)
+                {
+                    //return View("_Exception");
+                    //return new HttpStatusCodeResult(HttpStatusCode.BadRequest); // 400
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id is required!");
+                }
+                MovieModel model = _movieService.GetQuery().SingleOrDefault(m => m.Id == id.Value);
+                if (model == null)
+                {
+                    //return View("_Exception");
+                    //return new HttpStatusCodeResult(HttpStatusCode.NotFound); // 404
+                    //return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Movie not found!");
+                    return HttpNotFound();
+                }
+                return View(model);
+            }
+            catch (Exception exc)
+            {
+                return View("_Exception");
+            }
+        }
+
+        public ActionResult Edit(int? id)
+        {
+            try
+            {
+                if (id == null)
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                MovieModel model = _movieService.GetQuery().SingleOrDefault(m => m.Id == id);
+                if (model == null)
+                    return HttpNotFound();
+                
+                List<int> years = new List<int>();
+                for (int year = DateTime.Today.Year + 1; year >= 1930; year--)
+                {
+                    years.Add(year);
+                }
+                List<SelectListItem> yearSelectListItems = years.Select(y => new SelectListItem()
+                {
+                    Value = y.ToString(),
+                    Text = y.ToString()
+                }).ToList();
+                SelectList yearSelectList = new SelectList(yearSelectListItems, "Value", "Text", model.ProductionYear);
+
+                //ViewBag.Years = yearSelectList;
+                ViewData["Years"] = yearSelectList;
+
+                return View(model);
+            }
+            catch (Exception exc)
+            {
+                return View("_Exception");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //public ActionResult Edit(string Name, double? BoxOfficeReturn, string ProductionYear)
+        public ActionResult Edit(MovieModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _movieService.Update(model);
+                    return RedirectToAction("List");
+                }
+
+                List<int> years = new List<int>();
+                for (int year = DateTime.Now.Date.Year + 1; year >= 1930; year--)
+                {
+                    years.Add(year);
+                }
+                List<SelectListItem> yearSelectListItems = years.Select(y => new SelectListItem()
+                {
+                    Value = y.ToString(),
+                    Text = y.ToString()
+                }).ToList();
+                SelectList yearSelectList = new SelectList(yearSelectListItems, "Value", "Text", model.ProductionYear);
+                ViewBag.Years = yearSelectList;
+
+                return View(model);
             }
             catch (Exception exc)
             {

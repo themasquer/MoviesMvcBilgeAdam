@@ -25,6 +25,9 @@
             <th>
                 Directors
             </th>
+            <th>
+
+            </th>
         </tr>
         @foreach (MovieModel movie in Model)
         {
@@ -54,6 +57,11 @@
                     }
                     @Html.Raw(directors) @* HTML helper: Parametre olarak gönderilen (directors) ve HTML içeriğe sahip olan veriyi HTML formatı ile gösterir *@
 
+                </td>
+                <td>
+                    @*@Html.ActionLink("Details", "Details", "Movies", new { id = movie.Id }, null)*@
+                    @Html.ActionLink("Details", "Details", new { id = movie.Id }) | 
+                    @Html.ActionLink("Edit", "Edit", new { id = movie.Id })
                 </td>
             </tr>
         }

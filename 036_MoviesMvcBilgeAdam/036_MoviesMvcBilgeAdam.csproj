@@ -365,6 +365,8 @@
     <Content Include="Views\Shared\_Exception.cshtml" />
     <Content Include="Views\Movies\MovieList.cshtml" />
     <Content Include="Views\Movies\Create.cshtml" />
+    <Content Include="Views\Movies\Details.cshtml" />
+    <Content Include="Views\Movies\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
