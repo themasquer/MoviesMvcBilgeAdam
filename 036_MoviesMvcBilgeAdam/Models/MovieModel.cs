@@ -44,6 +44,9 @@ namespace _036_MoviesMvcBilgeAdam.Models
             }
         }
 
+        [DisplayName("Directors")]
+        public List<int> DirectorIds { get; set; }
+
         public List<ReviewModel> Reviews { get; set; }
     }
 }

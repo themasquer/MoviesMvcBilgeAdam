@@ -198,6 +198,7 @@
     <Compile Include="Models\MovieModel.cs" />
     <Compile Include="Models\ReviewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DirectorService.cs" />
     <Compile Include="Services\MovieService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

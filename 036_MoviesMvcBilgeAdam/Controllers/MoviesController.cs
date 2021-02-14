@@ -14,11 +14,13 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
     {
         private readonly MoviesContext _db;
         private readonly MovieService _movieService;
+        private readonly DirectorService _directorService;
 
         public MoviesController()
         {
             _db = new MoviesContext();
             _movieService = new MovieService(_db);
+            _directorService = new DirectorService(_db);
         }
 
         // GET: Movies
@@ -99,6 +101,7 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
         {
             return new EmptyResult();
         }
+
         // GET: Movies/Create
         //public ActionResult Create()
         [HttpGet] // bu action method selector yazılmadığında default'u HttpGet'tir
@@ -111,6 +114,9 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
             }
             ViewBag.Years = years;
 
+            List<DirectorModel> directors = _directorService.GetQuery().ToList();
+            ViewBag.Directors = directors;
+
             //return new ViewResult();
             return View();
         }
@@ -120,8 +126,9 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
         //{
         //    return Content("Movie submitted: Name = " + Name + ", BoxOfficeReturn = " + BoxOfficeReturn + ", ProductionYear = " + ProductionYear);
         //}
+        // POST: Movies/Create
         [HttpPost]
-        public ActionResult Create(string Name, double? BoxOfficeReturn, string ProductionYear)
+        public ActionResult Create(string Name, double? BoxOfficeReturn, string ProductionYear, List<int> DirectorIds)
         {
             try
             {
@@ -133,7 +140,8 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
                 {
                     Name = Name,
                     BoxOfficeReturn = BoxOfficeReturn,
-                    ProductionYear = ProductionYear
+                    ProductionYear = ProductionYear,
+                    DirectorIds = DirectorIds
                 };
                 _movieService.Add(model);
 
@@ -146,6 +154,7 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
             }
         }
 
+        // GET: Movies/Details/7
         public ActionResult Details(int? id)
         {
             try
@@ -173,6 +182,7 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
             }
         }
 
+        // GET: Movies/Edit/7
         public ActionResult Edit(int? id)
         {
             try
@@ -193,10 +203,15 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
                     Value = y.ToString(),
                     Text = y.ToString()
                 }).ToList();
-                SelectList yearSelectList = new SelectList(yearSelectListItems, "Value", "Text", model.ProductionYear);
+                SelectList yearSelectList = new SelectList(yearSelectListItems, "Value", "Text", model.ProductionYear); // DropDownList
 
                 //ViewBag.Years = yearSelectList;
                 ViewData["Years"] = yearSelectList;
+
+                List<DirectorModel> directors = _directorService.GetQuery().ToList();
+                MultiSelectList directorMultiSelectList = new MultiSelectList(directors, "Id", "FullName", model.DirectorIds); // ListBox
+
+                ViewData["Directors"] = directorMultiSelectList;
 
                 return View(model);
             }
@@ -206,6 +221,7 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
             }
         }
 
+        // POST: Movies/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         //public ActionResult Edit(string Name, double? BoxOfficeReturn, string ProductionYear)
@@ -240,6 +256,7 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
             }
         }
 
+        // GET: Movies/DeleteMovie/7
         //public ActionResult DeleteMovie(int? id)
         //{
         //    try
@@ -260,6 +277,7 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
         //    }
         //}
 
+        // GET: Movies/Delete/7
         public ActionResult Delete(int? id)
         {
             try
@@ -288,6 +306,7 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
             }
         }
 
+        // POST: Movies/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Delete")]

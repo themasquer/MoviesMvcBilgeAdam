@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Security.AccessControl;
 
 namespace _036_MoviesMvcBilgeAdam.Models
 {
@@ -15,5 +17,17 @@ namespace _036_MoviesMvcBilgeAdam.Models
         public string Surname { get; set; }
 
         public bool Retired { get; set; }
+
+        public List<MovieModel> Movies { get; set; }
+
+        private string _fullName;
+        public string FullName
+        {
+            get
+            {
+                _fullName = Name + " " + Surname;
+                return _fullName;
+            }
+        }
     }
 }
