@@ -87,5 +87,23 @@ namespace _036_MoviesMvcBilgeAdam.Services
                 throw exc;
             }
         }
+
+        public bool Delete(int id)
+        {
+            try
+            {
+                Movie entity = _db.Movies.Find(id);
+                if (entity.Reviews != null && entity.Reviews.Count > 0)
+                    return false;
+                _db.MovieDirectors.RemoveRange(entity.MovieDirectors);
+                _db.Movies.Remove(entity);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+        }
     }
 }

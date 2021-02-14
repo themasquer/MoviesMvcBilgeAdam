@@ -216,5 +216,25 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
                 return View("_Exception");
             }
         }
+
+        public ActionResult DeleteMovie(int? id)
+        {
+            try
+            {
+                if (id == null)
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                bool result = _movieService.Delete(id.Value);
+                if (result)
+                    TempData["Message"] = "Movie deleted successfully.";
+                else
+                    TempData["Message"] = "Movie could not be deleted because there are relational reviews.";
+                return RedirectToAction("List");
+            }
+            catch (Exception exc)
+            {
+                TempData["Message"] = "An error occured while deleting the movie!";
+                return RedirectToAction("List");
+            }
+        }
     }
 }

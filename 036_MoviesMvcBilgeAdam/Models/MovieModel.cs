@@ -1,22 +1,26 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace _036_MoviesMvcBilgeAdam.Models
 {
     public class MovieModel
     {
-        //todo: Validasyon mesajlarının özelleştirilmesi
+        // MVC FluentValidation NuGet package: https://docs.fluentvalidation.net/en/latest/mvc5.html
 
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(250)]
+        //[Required(ErrorMessage = "Name must not be empty!")]
+        [Required(ErrorMessage = "{0} must not be empty!")]
+        //[StringLength(250, ErrorMessage = "Name must have maximum 250 characters!")]
+        [StringLength(250, ErrorMessage = "{0} must have maximum {1} characters!")]
         public string Name { get; set; }
 
-        [Required]
-        [StringLength(4)]
+        [Required(ErrorMessage = "{0} must not be empty!")]
+        [DisplayName("Production Year")]
         public string ProductionYear { get; set; }
 
+        [DisplayName("Box Office Return")]
         public double? BoxOfficeReturn { get; set; }
 
         public List<DirectorModel> Directors { get; set; }
