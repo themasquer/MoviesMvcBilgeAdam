@@ -6,51 +6,46 @@
 
 <div class="paddingtop">
 
-    <h2>
-        @*Movie Details*@
-        @*@Html.Display("Movie Details")*@
-        
-        <label>@*Movie Details*@</label>
-        @Html.Label("Movie Details")
-    </h2>
+    <h2>Movie Details</h2>
 
-    <div class="row">
+    @* Aşağıdaki comment'li kısım _Details parital view'ı üzerinden gelecektir. *@
+    @*<div class="row">
         <div class="col-2">
             <b>
-                @*Name*@
-                @*@Html.DisplayName("Name")*@
+                Name
+                @Html.DisplayName("Name")
                 @Html.DisplayNameFor(m => m.Name)
             </b>
         </div>
         <div class="col-4">
-            @*@Model.Name*@
+            @Model.Name
             @Html.DisplayFor(m => m.Name)
         </div>
         <div class="col-2">
             <strong>
-                @*Production Year*@
+                Production Year
                 @Html.DisplayNameFor(m => m.ProductionYear)
             </strong>
         </div>
         <div class="col-4">
-            @*@Model.ProductionYear*@
+            @Model.ProductionYear
             @Html.DisplayFor(m => m.ProductionYear)
         </div>
     </div>
     <div class="row">
         <div class="col-2">
             <b>
-                @*Box Office Return*@
+                Box Office Return
                 @Html.DisplayNameFor(m => m.BoxOfficeReturn)
             </b>
         </div>
         <div class="col-4">
-            @*@Model.BoxOfficeReturn*@
+            @Model.BoxOfficeReturn
             @Html.DisplayFor(m => m.BoxOfficeReturn)
         </div>
         <div class="col-2">
             <b>
-                @*Directors*@
+                Directors
                 @Html.DisplayNameFor(m => m.Directors)
             </b>
         </div>
@@ -64,7 +59,9 @@
                 @Html.Raw(directors)
             }
         </div>
-    </div>
+    </div>*@
+    @Html.Partial("_Details", Model)
+
     <div class="row">
         <div class="col-12">
             @*@Html.ActionLink("Movie List", "List")*@

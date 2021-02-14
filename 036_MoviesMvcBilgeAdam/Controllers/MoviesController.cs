@@ -38,7 +38,30 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
             }
             catch (Exception exc)
             {
-                return View("_Exception");
+                return View("Exception");
+            }
+        }
+
+        // GET: Movies/ListAfterDelete?result=1
+        public ActionResult ListAfterDelete(int? result = null)
+        {
+            try
+            {
+                if (result.HasValue)
+                {
+                    if (result.Value == 1)
+                        TempData["Message"] = "Movie deleted successfully.";
+                    else if (result.Value == 0)
+                        TempData["Message"] = "Movie could not be deleted because there are relational reviews.";
+                    else // -1
+                        TempData["Message"] = "An error occured while deleting the movie!";
+                }
+                List<MovieModel> model = _movieService.GetQuery().ToList();
+                return View("MovieList", model);
+            }
+            catch (Exception exc)
+            {
+                return View("Exception");
             }
         }
 
@@ -119,7 +142,7 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
             }
             catch (Exception exc)
             {
-                return View("_Exception");
+                return View("Exception");
             }
         }
 
@@ -130,14 +153,14 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
                 //if (id == null)
                 if (!id.HasValue)
                 {
-                    //return View("_Exception");
+                    //return View("Exception");
                     //return new HttpStatusCodeResult(HttpStatusCode.BadRequest); // 400
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id is required!");
                 }
                 MovieModel model = _movieService.GetQuery().SingleOrDefault(m => m.Id == id.Value);
                 if (model == null)
                 {
-                    //return View("_Exception");
+                    //return View("Exception");
                     //return new HttpStatusCodeResult(HttpStatusCode.NotFound); // 404
                     //return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Movie not found!");
                     return HttpNotFound();
@@ -146,7 +169,7 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
             }
             catch (Exception exc)
             {
-                return View("_Exception");
+                return View("Exception");
             }
         }
 
@@ -179,7 +202,7 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
             }
             catch (Exception exc)
             {
-                return View("_Exception");
+                return View("Exception");
             }
         }
 
@@ -213,11 +236,62 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
             }
             catch (Exception exc)
             {
-                return View("_Exception");
+                return View("Exception");
             }
         }
 
-        public ActionResult DeleteMovie(int? id)
+        //public ActionResult DeleteMovie(int? id)
+        //{
+        //    try
+        //    {
+        //        if (id == null)
+        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //        bool result = _movieService.Delete(id.Value);
+        //        if (result)
+        //            TempData["Message"] = "Movie deleted successfully.";
+        //        else
+        //            TempData["Message"] = "Movie could not be deleted because there are relational reviews.";
+        //        return RedirectToAction("List");
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        TempData["Message"] = "An error occured while deleting the movie!";
+        //        return RedirectToAction("List");
+        //    }
+        //}
+
+        public ActionResult Delete(int? id)
+        {
+            try
+            {
+                if (id == null)
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                MovieModel model = _movieService.GetQuery().SingleOrDefault(m => m.Id == id);
+                if (model == null)
+                    return HttpNotFound();
+
+                // Bu tip model özelleştirme işlemleri ya servislerde ya da modellerde yapılmalıdır!
+                //if (model.Directors != null && model.Directors.Count > 0)
+                //{
+                //    model.DirectorNamesHtml = "";
+                //    foreach (DirectorModel directorModel in model.Directors)
+                //    {
+                //        model.DirectorNamesHtml += directorModel.Name + " " + directorModel.Surname + "<br />";
+                //    }
+                //}
+
+                return View(model);
+            }
+            catch (Exception exc)
+            {
+                return View("Exception");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int? id)
         {
             try
             {
@@ -225,15 +299,12 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 bool result = _movieService.Delete(id.Value);
                 if (result)
-                    TempData["Message"] = "Movie deleted successfully.";
-                else
-                    TempData["Message"] = "Movie could not be deleted because there are relational reviews.";
-                return RedirectToAction("List");
+                    return RedirectToAction("ListAfterDelete", new { result = 1 }); // ~/Movies/List?result=1 : query string
+                return RedirectToAction("ListAfterDelete", new { result = 0 }); // ~/Movies/List?result=0
             }
             catch (Exception exc)
             {
-                TempData["Message"] = "An error occured while deleting the movie!";
-                return RedirectToAction("List");
+                return RedirectToAction("ListAfterDelete", new { result = -1 }); // ~/Movies/List?result=-1
             }
         }
     }

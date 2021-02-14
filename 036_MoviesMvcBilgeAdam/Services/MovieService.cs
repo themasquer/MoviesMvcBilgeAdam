@@ -44,6 +44,10 @@ namespace _036_MoviesMvcBilgeAdam.Services
                         Reviewer = r.Reviewer,
                         MovieId = r.MovieId
                     }).ToList()
+
+                    // Entity Framework string.Join() C# methodunun SQL fonksiyon karşılığı olmadığı için aşağıdaki kod satırını çalıştırırken hata alacağından 
+                    // DirectorNamesHtml'i MovieModel'de Directors üzerinden dolduruyoruz.
+                    //,DirectorNamesHtml = string.Join("<br />", m.MovieDirectors.Select(md => md.Director.Name + " " + md.Director.Surname))
                 });
             }
             catch (Exception exc)

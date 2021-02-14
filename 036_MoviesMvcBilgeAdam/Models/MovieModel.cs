@@ -25,6 +25,25 @@ namespace _036_MoviesMvcBilgeAdam.Models
 
         public List<DirectorModel> Directors { get; set; }
 
+        private string _directorNamesHtml;
+
+        [DisplayName("Directors")]
+        public string DirectorNamesHtml
+        {
+            get
+            {
+                _directorNamesHtml = "";
+                if (Directors != null && Directors.Count > 0)
+                {
+                    foreach (DirectorModel directorModel in Directors)
+                    {
+                        _directorNamesHtml += directorModel.Name + " " + directorModel.Surname + "<br />";
+                    }
+                }
+                return _directorNamesHtml;
+            }
+        }
+
         public List<ReviewModel> Reviews { get; set; }
     }
 }

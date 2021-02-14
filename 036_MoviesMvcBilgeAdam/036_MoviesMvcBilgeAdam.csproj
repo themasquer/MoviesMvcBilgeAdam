@@ -366,11 +366,13 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Home\Welcome.cshtml" />
     <Content Include="Views\Movies\Index.cshtml" />
-    <Content Include="Views\Shared\_Exception.cshtml" />
+    <Content Include="Views\Shared\Exception.cshtml" />
     <Content Include="Views\Movies\MovieList.cshtml" />
     <Content Include="Views\Movies\Create.cshtml" />
     <Content Include="Views\Movies\Details.cshtml" />
     <Content Include="Views\Movies\Edit.cshtml" />
+    <Content Include="Views\Movies\Delete.cshtml" />
+    <Content Include="Views\Movies\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

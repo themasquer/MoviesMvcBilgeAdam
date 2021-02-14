@@ -69,7 +69,11 @@
                     @*@Html.ActionLink("Details", "Details", "Movies", new { id = movie.Id }, null)*@
                     @Html.ActionLink("Details", "Details", new { id = movie.Id }) | 
                     @Html.ActionLink("Edit", "Edit", new { id = movie.Id }) | 
-                    @Html.ActionLink("Delete", "DeleteMovie", new { id = movie.Id })
+                    
+                    @* Get aksiyon methodu ile silme. Silme işlemleri bu şekilde yapılmamalıdır! *@
+                    @*@Html.ActionLink("Delete", "DeleteMovie", new { id = movie.Id })*@
+
+                    @Html.ActionLink("Delete", "Delete", new { id = movie.Id })
                 </td>
             </tr>
         }
