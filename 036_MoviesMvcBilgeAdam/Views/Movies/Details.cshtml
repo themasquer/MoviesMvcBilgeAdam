@@ -4,12 +4,12 @@
     ViewBag.Title = "Movie Details";
 }
 
-<div class="paddingtop">
+@*<div class="paddingtop">*@ @* Layout view'ında RenderBody() üzerinde yazıldı *@
 
-    <h2>Movie Details</h2>
+<h2>Movie Details</h2>
 
-    @* Aşağıdaki comment'li kısım _Details parital view'ı üzerinden gelecektir. *@
-    @*<div class="row">
+@* Aşağıdaki comment'li kısım _Details parital view'ı üzerinden gelecektir. *@
+@*<div class="row">
         <div class="col-2">
             <b>
                 Name
@@ -60,14 +60,14 @@
             }
         </div>
     </div>*@
-    @Html.Partial("_Details", Model)
+@Html.Partial("_Details", Model)
 
-    <div class="row">
-        <div class="col-12">
-            @*@Html.ActionLink("Movie List", "List")*@
-            @*<a href="@Url.Action("List", "Movies")">Movie List</a>*@
-            <a href="@Url.Action("List")">Movie List</a>
-        </div>
+<div class="row">
+    <div class="col-12">
+        @*@Html.ActionLink("Movie List", "List")*@
+        @*<a href="@Url.Action("List", "Movies")">Movie List</a>*@
+        <a href="@Url.Action("List")">Movie List</a>
     </div>
 </div>
+@*</div>*@
 

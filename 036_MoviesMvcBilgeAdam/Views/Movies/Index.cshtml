@@ -5,34 +5,34 @@
     ViewBag.Title = "Movie List";
 }
 
-<div class="paddingtop">
-    <h2>Movie List</h2>
-    <table class="table">
+@*<div class="paddingtop">*@ @* Layout view'ında RenderBody() üzerinde yazıldı *@
+<h2>Movie List</h2>
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Production Year
+        </th>
+        <th>
+            Box Office Return
+        </th>
+    </tr>
+    @foreach (Movie movie in Model)
+    {
         <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                Production Year
-            </th>
-            <th>
-                Box Office Return
-            </th>
+            <td>
+                @movie.Name
+            </td>
+            <td>
+                @movie.ProductionYear
+            </td>
+            <td>
+                @movie.BoxOfficeReturn
+            </td>
         </tr>
-        @foreach (Movie movie in Model)
-        {
-            <tr>
-                <td>
-                    @movie.Name
-                </td>
-                <td>
-                    @movie.ProductionYear
-                </td>
-                <td>
-                    @movie.BoxOfficeReturn
-                </td>
-            </tr>
-        }
-    </table>
-</div>
+    }
+</table>
+@*</div>*@
 

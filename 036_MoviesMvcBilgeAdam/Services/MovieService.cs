@@ -96,9 +96,14 @@ namespace _036_MoviesMvcBilgeAdam.Services
             try
             {
                 Movie entity = _db.Movies.Find(model.Id);
+                _db.MovieDirectors.RemoveRange(entity.MovieDirectors);
                 entity.Name = model.Name;
                 entity.BoxOfficeReturn = model.BoxOfficeReturn;
                 entity.ProductionYear = model.ProductionYear;
+                entity.MovieDirectors = (model.DirectorIds ?? new List<int>()).Select(dId => new MovieDirector()
+                {
+                    DirectorId = dId
+                }).ToList();
                 _db.Entry(entity).State = EntityState.Modified;
                 _db.SaveChanges();
             }

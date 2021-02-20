@@ -107,18 +107,25 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
         [HttpGet] // bu action method selector yazılmadığında default'u HttpGet'tir
         public ViewResult Create()
         {
-            List<int> years = new List<int>();
-            for (int year = DateTime.Now.Year + 1; year >= 1930; year--)
+            try
             {
-                years.Add(year);
+                List<int> years = new List<int>();
+                for (int year = DateTime.Now.Year + 1; year >= 1930; year--)
+                {
+                    years.Add(year);
+                }
+                ViewBag.Years = years;
+
+                List<DirectorModel> directors = _directorService.GetQuery().ToList();
+                ViewBag.Directors = directors;
+
+                //return new ViewResult();
+                return View();
             }
-            ViewBag.Years = years;
-
-            List<DirectorModel> directors = _directorService.GetQuery().ToList();
-            ViewBag.Directors = directors;
-
-            //return new ViewResult();
-            return View();
+            catch (Exception exc)
+            {
+                return View("Exception");
+            }
         }
 
         // GET: Movies/CreateSubmit
@@ -247,6 +254,11 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
                 }).ToList();
                 SelectList yearSelectList = new SelectList(yearSelectListItems, "Value", "Text", model.ProductionYear);
                 ViewBag.Years = yearSelectList;
+
+                List<DirectorModel> directors = _directorService.GetQuery().ToList();
+                MultiSelectList directorMultiSelectList = new MultiSelectList(directors, "Id", "FullName", model.DirectorIds); // ListBox
+
+                ViewData["Directors"] = directorMultiSelectList;
 
                 return View(model);
             }

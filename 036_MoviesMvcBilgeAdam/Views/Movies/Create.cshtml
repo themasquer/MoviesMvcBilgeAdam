@@ -5,7 +5,7 @@
     List<DirectorModel> directors = (List<DirectorModel>)ViewBag.Directors;
 }
 
-<div class="paddingtop">
+@*<div class="paddingtop">*@ @* Layout view'ında RenderBody() üzerinde yazıldı *@
     <h2>@ViewBag.Title</h2>
     <hr />
     <form action="/Movies/Create" method="post">
@@ -70,5 +70,5 @@
             </div>
         </div>
     </form>
-</div>
+@*</div>*@
 
