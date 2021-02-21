@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace _036_MoviesMvcBilgeAdam.Entities
 {
@@ -12,6 +13,8 @@ namespace _036_MoviesMvcBilgeAdam.Entities
 
         [StringLength(200)]
         public string Reviewer { get; set; }
+
+        public DateTime Date { get; set; }
 
         public int MovieId { get; set; }
         public virtual Movie Movie { get; set; } // virtual: Entity Framework Lazy Loading için
