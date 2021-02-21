@@ -63,6 +63,7 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Content,Rating,Reviewer,Date,MovieId")] Review review)
         {
+            //todo: Burası ve ReviewModel içindeki Data Annotation'lar!
             if (ModelState.IsValid)
             {
                 db.Reviews.Add(review);

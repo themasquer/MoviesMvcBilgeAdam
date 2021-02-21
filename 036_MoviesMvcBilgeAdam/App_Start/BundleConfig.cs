@@ -31,6 +31,14 @@ namespace _036_MoviesMvcBilgeAdam
             bundles.Add(new StyleBundle("~/Content/fontawesome").Include(
                 "~/Content/font-awesome.css"
                 ));
+
+            bundles.Add(new StyleBundle("~/plugins/datepickercss").Include(
+                "~/Plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css"
+                ));
+            bundles.Add(new ScriptBundle("~/plugins/datepickerjs").Include(
+                "~/Plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js",
+                "~/Plugins/bootstrap-datepicker/dist/locales/bootstrap-datepicker.tr.min.js"
+                ));
         }
     }
 }
