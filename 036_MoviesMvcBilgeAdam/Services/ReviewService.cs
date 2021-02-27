@@ -103,5 +103,19 @@ namespace _036_MoviesMvcBilgeAdam.Services
                 throw exc;
             }
         }
+
+        public void Delete(int id)
+        {
+            try
+            {
+                Review entity = _db.Reviews.Find(id);
+                _db.Reviews.Remove(entity);
+                _db.SaveChanges();
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+        }
     }
 }

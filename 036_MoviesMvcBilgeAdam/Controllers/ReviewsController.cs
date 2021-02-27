@@ -10,6 +10,7 @@ using _036_MoviesMvcBilgeAdam.Services;
 
 namespace _036_MoviesMvcBilgeAdam.Controllers
 {
+    [HandleError]
     public class ReviewsController : Controller
     {
         private MoviesContext db = new MoviesContext();
@@ -36,9 +37,13 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
-            Review review = db.Reviews.Find(id);
+
+            //Review review = db.Reviews.Find(id);
+            ReviewModel review = reviewService.GetQuery().SingleOrDefault(r => r.Id == id);
+
             if (review == null)
             {
                 return HttpNotFound();
@@ -47,6 +52,7 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         }
 
         // GET: Reviews/Create
+        [Authorize]
         public ActionResult Create()
         {
             //ViewBag.MovieId = new SelectList(db.Movies, "Id", "Name");
@@ -65,6 +71,7 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         //public ActionResult Create([Bind(Include = "Id,Content,Rating,Reviewer,Date,MovieId")] Review review)
         public ActionResult Create(ReviewModel review)
         {
@@ -85,6 +92,8 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         }
 
         // GET: Reviews/Edit/5
+        //[Authorize(Users = "leo@alsac.com")]
+        [Authorize(Users = "leo@alsac.com,angel@alsac.com")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -112,6 +121,7 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Users = "leo@alsac.com,angel@alsac.com")]
         //public ActionResult Edit([Bind(Include = "Id,Content,Rating,Reviewer,Date,MovieId")] Review review)
         public ActionResult Edit(ReviewModel review)
         {
@@ -160,9 +170,12 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //[Authorize(Roles = "Admin,User")]
+        //[Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
-            //reviewService.Delete(id);
+            reviewService.Delete(id);
             return RedirectToAction("Index");
         }
 

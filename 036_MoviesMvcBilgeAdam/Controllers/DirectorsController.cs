@@ -8,6 +8,8 @@ using System.Web.Mvc;
 namespace _036_MoviesMvcBilgeAdam.Controllers
 {
     [HandleError]
+    //[Authorize(Roles = "Admin,User")]
+    [Authorize]
     public class DirectorsController : Controller
     {
         private MoviesContext db = new MoviesContext();
@@ -23,6 +25,7 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
 
         // GET: Directors
         //[HandleError] // Controller üzerinde tanımladığımız için her aksiyonda tanımlamamıza gerek yoktur.
+        [AllowAnonymous]
         public ActionResult Index()
         {
             //return View(db.Directors.ToList());
@@ -31,6 +34,7 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
 
         // GET: Directors/Details/5
         //[HandleError]
+        [AllowAnonymous]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -50,6 +54,7 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
 
         // GET: Directors/Create
         //[HandleError]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             ViewBag.Movies = new MultiSelectList(movieService.GetQuery().ToList(), "Id", "Name");
@@ -63,6 +68,7 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         //[HandleError]
         //public ActionResult Create([Bind(Include = "Id,Name,Surname,Retired")] Director director)
         //public ActionResult Create([Bind(Include = "Name,Surname,Retired,MovieIds")] DirectorModel director)
@@ -83,6 +89,7 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
 
         // GET: Directors/Edit/5
         //[HandleError]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -108,6 +115,7 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         //[HandleError]
         //public ActionResult Edit([Bind(Include = "Id,Name,Surname,Retired")] Director director)
         public ActionResult Edit(DirectorModel director)

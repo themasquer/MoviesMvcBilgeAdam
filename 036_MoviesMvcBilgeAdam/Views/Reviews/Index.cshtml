@@ -98,24 +98,28 @@ else
                 var clickedLink = $(this); // tıklanılan link'i getirir
                 console.log(clickedLink);
 
-                //var clickedLinkHref = clickedLink.prop("href");
-                //console.log(clickedLinkHref);
-                //clickedLinkHref = clickedLink.attr("href");
-                //console.log(clickedLinkHref);
-
                 var clickedLinkId = clickedLink.prop("id");
+                console.log(clickedLinkId);
+
+                var clickedLinkHref = clickedLink.prop("href"); // http://domain.com/Reviews/Delete/1
+                console.log(clickedLinkHref);
+                clickedLinkHref = clickedLink.attr("href"); // /Reviews/Delete/1
+                console.log(clickedLinkHref);
+
+                var clickedLinkhrefArray = clickedLinkHref.split("/");
+                clickedLinkId = clickedLinkhrefArray[3];
                 console.log(clickedLinkId);
 
                 $("#hfReviewId").val(clickedLinkId);
 
                 alertify.confirm("Delete Review", "Are you sure you want to delete this review?",
-                    function () { // OK
+                    function () { // OK fonksiyonu
                         //alertify.success('Ok');
                         $("#fReviews").submit();
                     },
-                    function () { // Cancel
+                    function () { // Cancel fonksiyonu
                         //alertify.error('Cancel');
-                    });
+                    }).set("labels", { ok: "Yes", cancel: "No" });
             });
         });
     </script>

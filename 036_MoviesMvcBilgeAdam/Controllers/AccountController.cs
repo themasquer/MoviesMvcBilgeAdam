@@ -5,10 +5,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using _036_MoviesMvcBilgeAdam.Configs;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using _036_MoviesMvcBilgeAdam.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace _036_MoviesMvcBilgeAdam.Controllers
 {
@@ -58,7 +60,9 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+
+            //return View();
+            return View(new LoginViewModel());
         }
 
         //
@@ -139,7 +143,8 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            //return View();
+            return View(new RegisterViewModel());
         }
 
         //
@@ -152,6 +157,16 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+                // Kullanıcıya default rol eklenmesi:
+                user.Roles.Add(new IdentityUserRole()
+                {
+                    UserId = user.Id,
+
+                    //RoleId = "u"
+                    RoleId = MoviesConfig.UserRoleCode
+                });
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
