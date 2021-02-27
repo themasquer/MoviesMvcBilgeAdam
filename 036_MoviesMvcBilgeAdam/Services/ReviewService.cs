@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using _036_MoviesMvcBilgeAdam.Contexts;
+using _036_MoviesMvcBilgeAdam.Entities;
 using _036_MoviesMvcBilgeAdam.Models;
 
 namespace _036_MoviesMvcBilgeAdam.Services
@@ -59,6 +61,27 @@ namespace _036_MoviesMvcBilgeAdam.Services
             for (int i = 1; i <= 10; i++)
             {
                 review.AllRatings.Add(i);
+            }
+        }
+
+        public void Add(ReviewModel model)
+        {
+            try
+            {
+                Review entity = new Review()
+                {
+                    Content = model.Content,
+                    Date = model.Date.Value,
+                    MovieId = model.MovieId,
+                    Rating = model.Rating,
+                    Reviewer = string.IsNullOrWhiteSpace(model.Reviewer) ? "Anonymous" : model.Reviewer
+                };
+                _db.Reviews.Add(entity);
+                _db.SaveChanges();
+            }
+            catch (Exception exc)
+            {
+                throw exc;
             }
         }
     }

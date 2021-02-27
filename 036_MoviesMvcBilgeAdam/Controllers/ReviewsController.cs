@@ -1,4 +1,5 @@
-﻿using _036_MoviesMvcBilgeAdam.Contexts;
+﻿using System;
+using _036_MoviesMvcBilgeAdam.Contexts;
 using _036_MoviesMvcBilgeAdam.Entities;
 using System.Data.Entity;
 using System.Linq;
@@ -50,9 +51,12 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         {
             //ViewBag.MovieId = new SelectList(db.Movies, "Id", "Name");
             //return View();
+
             ViewBag.Movies = new SelectList(movieService.GetQuery().ToList(), "Id", "Name");
+
             ReviewModel model = new ReviewModel();
             reviewService.FillAllRatings(model);
+
             return View(model);
         }
 
@@ -61,17 +65,22 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Content,Rating,Reviewer,Date,MovieId")] Review review)
+        //public ActionResult Create([Bind(Include = "Id,Content,Rating,Reviewer,Date,MovieId")] Review review)
+        public ActionResult Create(ReviewModel review)
         {
-            //todo: Burası ve ReviewModel içindeki Data Annotation'lar!
             if (ModelState.IsValid)
             {
-                db.Reviews.Add(review);
-                db.SaveChanges();
+                //db.Reviews.Add(review);
+                //db.SaveChanges();
+                reviewService.Add(review);
+
                 return RedirectToAction("Index");
             }
 
-            ViewBag.MovieId = new SelectList(db.Movies, "Id", "Name", review.MovieId);
+            //ViewBag.MovieId = new SelectList(db.Movies, "Id", "Name", review.MovieId);
+            ViewBag.Movies = new SelectList(movieService.GetQuery().ToList(), "Id", "Name", review.MovieId);
+            reviewService.FillAllRatings(review);
+
             return View(review);
         }
 
@@ -82,12 +91,19 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Review review = db.Reviews.Find(id);
+
+            //Review review = db.Reviews.Find(id);
+            ReviewModel review = reviewService.GetQuery().SingleOrDefault(r => r.Id == id);
+
             if (review == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.MovieId = new SelectList(db.Movies, "Id", "Name", review.MovieId);
+
+            //ViewBag.MovieId = new SelectList(db.Movies, "Id", "Name", review.MovieId);
+            ViewBag.Movies = new SelectList(movieService.GetQuery().ToList(), "Id", "Name", review.MovieId);
+            reviewService.FillAllRatings(review);
+
             return View(review);
         }
 
@@ -132,6 +148,11 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
             db.Reviews.Remove(review);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult TestException()
+        {
+            throw new Exception("Reviews Test Exception!");
         }
 
         protected override void Dispose(bool disposing)
