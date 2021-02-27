@@ -1,4 +1,6 @@
-﻿@*@model _036_MoviesMvcBilgeAdam.Entities.Review*@
+﻿@* ~/Views/Reviews/Create.cshtml view'ından kopyalanıp değiştirildi *@
+
+@*@model _036_MoviesMvcBilgeAdam.Entities.Review*@
 @model ReviewModel
 
 @{
@@ -10,6 +12,8 @@
 @using (Html.BeginForm("Edit", "Reviews", FormMethod.Post, new { autocomplete = "off" }))
 {
     @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.Id)
 
     <h4>Review</h4>
     <hr />
@@ -40,8 +44,9 @@
         @Html.LabelFor(model => model.DateValue, htmlAttributes: new { @class = "col-form-label col-md-2" })
         <div class="col-md-10">
 
-            @Html.EditorFor(model => model.DateValue, new { htmlAttributes = new { @class = "form-control" } })
-
+            @Html.EditorFor(model => model.DateValue, new { htmlAttributes = new { @class = "form-control", id = "tbDate" } })
+            
+            @Html.ValidationMessageFor(model => model.DateValue, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -99,7 +104,8 @@
                 autoclose: true,
                 todayHighlight: true,
                 orientation: "bottom auto",
-                format: "yyyy/mm/dd"
+                //format: "dd.mm.yyyy",
+                format: "mm/dd/yyyy"
                 //,language: "tr"
             });
         });

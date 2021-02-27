@@ -112,41 +112,57 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Content,Rating,Reviewer,Date,MovieId")] Review review)
+        //public ActionResult Edit([Bind(Include = "Id,Content,Rating,Reviewer,Date,MovieId")] Review review)
+        public ActionResult Edit(ReviewModel review)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(review).State = EntityState.Modified;
-                db.SaveChanges();
+                //db.Entry(review).State = EntityState.Modified;
+                //db.SaveChanges();
+                reviewService.Update(review);
+
                 return RedirectToAction("Index");
             }
-            ViewBag.MovieId = new SelectList(db.Movies, "Id", "Name", review.MovieId);
+
+            //ViewBag.MovieId = new SelectList(db.Movies, "Id", "Name", review.MovieId);
+            ViewBag.Movies = new SelectList(movieService.GetQuery().ToList(), "Id", "Name", review.MovieId);
+            reviewService.FillAllRatings(review);
+
             return View(review);
         }
 
+        // AlertifyJS kullanıldığı için delete view'ı dönülmemektedir.
         // GET: Reviews/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Review review = db.Reviews.Find(id);
-            if (review == null)
-            {
-                return HttpNotFound();
-            }
-            return View(review);
-        }
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Review review = db.Reviews.Find(id);
+        //    if (review == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(review);
+        //}
 
         // POST: Reviews/Delete/5
-        [HttpPost, ActionName("Delete")]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Review review = db.Reviews.Find(id);
+        //    db.Reviews.Remove(review);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Delete(int id)
         {
-            Review review = db.Reviews.Find(id);
-            db.Reviews.Remove(review);
-            db.SaveChanges();
+            //reviewService.Delete(id);
             return RedirectToAction("Index");
         }
 

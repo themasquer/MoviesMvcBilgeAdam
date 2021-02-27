@@ -24,6 +24,7 @@ namespace _036_MoviesMvcBilgeAdam.Models
         [DisplayName("Date")] 
         public string DateText => Date.HasValue ? Date.Value.ToString("yyyy/MM/dd", new CultureInfo("en")) : ""; // Index view
 
+        [Required(ErrorMessage = "{0} must not be empty!")]
         [DisplayName("Date")]
         public string DateValue // Edit view
         {
@@ -31,14 +32,16 @@ namespace _036_MoviesMvcBilgeAdam.Models
             {
                 if (Date == null)
                     return "";
-                return Date.Value.ToString("dd.MM.yyyy", new CultureInfo("tr"));
+                //return Date.Value.ToString("dd.MM.yyyy", new CultureInfo("tr"));
+                return Date.Value.ToString("MM/dd/yyyy", new CultureInfo("en"));
             }
             set
             {
                 Date = null;
                 if (!string.IsNullOrWhiteSpace(value))
                 {
-                    Date = DateTime.Parse(value, new CultureInfo("tr"));
+                    //Date = DateTime.Parse(value, new CultureInfo("tr"));
+                    Date = DateTime.Parse(value, new CultureInfo("en"));
                 }
             }
         }

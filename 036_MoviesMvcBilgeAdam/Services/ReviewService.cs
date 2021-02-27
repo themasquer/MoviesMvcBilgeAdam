@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using _036_MoviesMvcBilgeAdam.Contexts;
+﻿using _036_MoviesMvcBilgeAdam.Contexts;
 using _036_MoviesMvcBilgeAdam.Entities;
 using _036_MoviesMvcBilgeAdam.Models;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace _036_MoviesMvcBilgeAdam.Services
 {
@@ -77,6 +77,25 @@ namespace _036_MoviesMvcBilgeAdam.Services
                     Reviewer = string.IsNullOrWhiteSpace(model.Reviewer) ? "Anonymous" : model.Reviewer
                 };
                 _db.Reviews.Add(entity);
+                _db.SaveChanges();
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+        }
+
+        public void Update(ReviewModel model)
+        {
+            try
+            {
+                Review entity = _db.Reviews.Find(model.Id);
+                entity.Content = model.Content;
+                entity.Date = model.Date.Value;
+                entity.MovieId = model.MovieId;
+                entity.Rating = model.Rating;
+                entity.Reviewer = string.IsNullOrWhiteSpace(model.Reviewer) ? "Anonymous" : model.Reviewer;
+                _db.Entry(entity).State = EntityState.Modified;
                 _db.SaveChanges();
             }
             catch (Exception exc)
