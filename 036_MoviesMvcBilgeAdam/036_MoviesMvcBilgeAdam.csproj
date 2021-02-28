@@ -735,10 +735,10 @@
     <Content Include="Views\Reviews\Details.cshtml" />
     <Content Include="Views\Reviews\Edit.cshtml" />
     <Content Include="Views\Reviews\Index.cshtml" />
+    <Content Include="Views\MoviesReport\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\MoviesReport\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
