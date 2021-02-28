@@ -25,7 +25,34 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
             List<MovieReportInnerJoinModel> innerJoinList;
             innerJoinList = movieReportService.GetInnerJoinQuery().ToList();
 
-            return View(innerJoinList);
+            List<SelectListItem> onlyMatchedSelectListItems = new List<SelectListItem>()
+            {
+                new SelectListItem()
+                {
+                    Value = "1",
+                    Text = "Yes"
+
+                    //, Selected = true
+                },
+                new SelectListItem()
+                {
+                    Value = "0",
+                    Text = "No"
+                }
+            };
+
+            MoviesReportIndexViewModel viewModel = new MoviesReportIndexViewModel()
+            {
+                InnerJoinList = innerJoinList,
+
+                //OnlyMatchedSelectList = new SelectList(onlyMatchedSelectListItems, "Value", "Text", "1")
+                OnlyMatchedSelectList = new SelectList(onlyMatchedSelectListItems, "Value", "Text")
+
+                //, OnlyMatchedValue = 1
+            };
+
+            //return View(innerJoinList);
+            return View(viewModel);
         }
     }
 }

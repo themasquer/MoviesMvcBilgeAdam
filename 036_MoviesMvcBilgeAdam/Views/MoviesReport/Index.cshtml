@@ -1,83 +1,111 @@
-﻿@model List<MovieReportInnerJoinModel>
+﻿@*@model List<MovieReportInnerJoinModel>*@
+@model MoviesReportIndexViewModel
 
 @{
+    Layout = "~/Views/Shared/_MoviesReportLayout.cshtml";
     ViewBag.Title = "Movies Report";
 }
 
 <h2>@ViewBag.Title</h2>
 
-@if (Model != null && Model.Count > 0)
-{
-    <p>
-        @Model.Count records found.
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().MovieName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().MovieProductionYear)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().MovieBoxOfficeReturn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().DirectorFullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().DirectorRetired)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().ReviewContent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().ReviewRating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().ReviewReviewer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().ReviewDate)
-            </th>
-        </tr>
+<div class="row paddingtop">
+    <div class="col-1">
+        @Html.DisplayNameFor(model => model.OnlyMatchedValue)
+    </div>
+    <div class="col-1">
+        @Html.DropDownListFor(model => model.OnlyMatchedValue, Model.OnlyMatchedSelectList, new { @class = "form-control" })
+    </div>
+</div>
+<div class="row paddingtop">
+    <div class="col-12">
 
-        @foreach (var item in Model)
+        @*@if (Model != null && Model.Count > 0)*@
+        @if (Model.InnerJoinList != null && Model.InnerJoinList.Count > 0)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(model => model.FirstOrDefault().MovieName)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.FirstOrDefault().MovieProductionYear)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.FirstOrDefault().MovieBoxOfficeReturn)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.FirstOrDefault().DirectorFullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.FirstOrDefault().DirectorRetired)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.FirstOrDefault().ReviewContent)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.FirstOrDefault().ReviewRating)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.FirstOrDefault().ReviewReviewer)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.FirstOrDefault().ReviewDate)
-                </td>
-            </tr>
+            <p>
+                @*@Model.Count records found.*@
+                @Model.InnerJoinList.Count records found.
+            </p>
+            <table class="table table-responsive-lg">
+                <tr>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FirstOrDefault().MovieName)*@
+                        @Html.DisplayNameFor(model => model.InnerJoinList.FirstOrDefault().MovieName)
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FirstOrDefault().MovieProductionYear)*@
+                        @Html.DisplayNameFor(model => model.InnerJoinList.FirstOrDefault().MovieProductionYear)
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FirstOrDefault().MovieBoxOfficeReturn)*@
+                        @Html.DisplayNameFor(model => model.InnerJoinList.FirstOrDefault().MovieBoxOfficeReturn)
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FirstOrDefault().DirectorFullName)*@
+                        @Html.DisplayNameFor(model => model.InnerJoinList.FirstOrDefault().DirectorFullName)
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FirstOrDefault().DirectorRetired)*@
+                        @Html.DisplayNameFor(model => model.InnerJoinList.FirstOrDefault().DirectorRetired)
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FirstOrDefault().ReviewContent)*@
+                        @Html.DisplayNameFor(model => model.InnerJoinList.FirstOrDefault().ReviewContent)
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FirstOrDefault().ReviewRating)*@
+                        @Html.DisplayNameFor(model => model.InnerJoinList.FirstOrDefault().ReviewRating)
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FirstOrDefault().ReviewReviewer)*@
+                        @Html.DisplayNameFor(model => model.InnerJoinList.FirstOrDefault().ReviewReviewer)
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FirstOrDefault().ReviewDate)*@
+                        @Html.DisplayNameFor(model => model.InnerJoinList.FirstOrDefault().ReviewDate)
+                    </th>
+                </tr>
+
+                @*@foreach (var item in Model)*@
+                @foreach (var item in Model.InnerJoinList)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => item.MovieName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.MovieProductionYear)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.MovieBoxOfficeReturn)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.DirectorFullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.DirectorRetired)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.ReviewContent)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.ReviewRating)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.ReviewReviewer)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.ReviewDate)
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        }
+        else
+        {
+            <p>No records found.</p>
         }
 
-    </table>
-}
-else
-{
-    <p>No records found.</p>
-}
+    </div>
+</div>
