@@ -9,7 +9,12 @@
 
 @*<a href="/Movies/Create">New Movie</a>*@
 @*@Html.ActionLink("New Movie", "Create", "Movies")*@@* a tag'i oluşturan HTML Helper *@
-@Html.ActionLink("New Movie", "Create")
+
+@*@Html.ActionLink("New Movie", "Create")*@
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    @Html.ActionLink("New Movie", "Create")
+}
 
 @if (TempData["Message"] != null)
 {

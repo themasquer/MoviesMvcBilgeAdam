@@ -26,6 +26,8 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         // GET: Movies
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
             List<Movie> movies = _db.Movies.ToList();
             return View(movies);
         }
@@ -35,6 +37,8 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         {
             try
             {
+                if (!User.Identity.IsAuthenticated)
+                    return RedirectToAction("Login", "Account");
                 List<MovieModel> model = _movieService.GetQuery().ToList();
                 return View("MovieList", model);
             }
@@ -47,6 +51,8 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         // GET: Movies/ListAfterDelete?result=1
         public ActionResult ListAfterDelete(int? result = null)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
             try
             {
                 if (result.HasValue)
@@ -105,8 +111,13 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
         // GET: Movies/Create
         //public ActionResult Create()
         [HttpGet] // bu action method selector yazılmadığında default'u HttpGet'tir
-        public ViewResult Create()
+        //public ViewResult Create()
+        public ActionResult Create()
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+            if (!User.IsInRole("Admin"))
+                return RedirectToAction("Login", "Account");
             try
             {
                 List<int> years = new List<int>();
@@ -137,6 +148,10 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
         [HttpPost]
         public ActionResult Create(string Name, double? BoxOfficeReturn, string ProductionYear, List<int> DirectorIds)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+            if (!User.IsInRole("Admin"))
+                return RedirectToAction("Login", "Account");
             try
             {
                 if (string.IsNullOrWhiteSpace(Name))
@@ -164,6 +179,8 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
         // GET: Movies/Details/7
         public ActionResult Details(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
             try
             {
                 //if (id == null)
@@ -192,6 +209,8 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
         // GET: Movies/Edit/7
         public ActionResult Edit(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
             try
             {
                 if (id == null)
@@ -234,6 +253,8 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
         //public ActionResult Edit(string Name, double? BoxOfficeReturn, string ProductionYear)
         public ActionResult Edit(MovieModel model)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
             try
             {
                 if (ModelState.IsValid)
@@ -292,6 +313,8 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
         // GET: Movies/Delete/7
         public ActionResult Delete(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
             try
             {
                 if (id == null)
@@ -324,6 +347,8 @@ ViewResult (View())  ContentResult (Content()) EmptyResult   FileContentResult (
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
             try
             {
                 if (id == null)

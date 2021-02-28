@@ -164,7 +164,7 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
                     UserId = user.Id,
 
                     //RoleId = "u"
-                    RoleId = MoviesConfig.UserRoleCode
+                    RoleId = MoviesConfig.UserRoleId
                 });
 
                 var result = await UserManager.CreateAsync(user, model.Password);

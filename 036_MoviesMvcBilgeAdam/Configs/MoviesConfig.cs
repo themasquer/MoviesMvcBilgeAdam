@@ -2,6 +2,6 @@
 {
     public static class MoviesConfig
     {
-        public static string UserRoleCode => "u";
+        public static string UserRoleId => "u";
     }
 }
