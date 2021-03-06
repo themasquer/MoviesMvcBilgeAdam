@@ -7,6 +7,7 @@ namespace _036_MoviesMvcBilgeAdam.Models
     public class MoviesReportIndexViewModel
     {
         public List<MovieReportInnerJoinModel> InnerJoinList { get; set; }
+        public List<MovieReportLeftOuterJoinModel> LeftOuterJoinList { get; set; }
 
         public SelectList OnlyMatchedSelectList { get; set; }
 

@@ -20,10 +20,15 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         }
 
         // GET: MoviesReport
-        public ActionResult Index()
+        public ActionResult Index(int? OnlyMatchedValue = null)
         {
-            List<MovieReportInnerJoinModel> innerJoinList;
-            innerJoinList = movieReportService.GetInnerJoinQuery().ToList();
+            List<MovieReportInnerJoinModel> innerJoinList = null;
+            List<MovieReportLeftOuterJoinModel> leftOuterJoinList = null;
+
+            if ((OnlyMatchedValue ?? 1) == 1) // only matched, inner join
+                innerJoinList = movieReportService.GetInnerJoinQuery().ToList();
+            else // not only matched, left outer join
+                leftOuterJoinList = movieReportService.GetLeftOuterJoinQuery().ToList();
 
             List<SelectListItem> onlyMatchedSelectListItems = new List<SelectListItem>()
             {
@@ -44,6 +49,7 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
             MoviesReportIndexViewModel viewModel = new MoviesReportIndexViewModel()
             {
                 InnerJoinList = innerJoinList,
+                LeftOuterJoinList = leftOuterJoinList,
 
                 //OnlyMatchedSelectList = new SelectList(onlyMatchedSelectListItems, "Value", "Text", "1")
                 OnlyMatchedSelectList = new SelectList(onlyMatchedSelectListItems, "Value", "Text")
