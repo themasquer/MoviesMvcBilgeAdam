@@ -34,3 +34,7 @@ div.paddingtop {
 .divradiopaddingtop {
     padding-top: 7px;
 }
+
+.listbox {
+    height: 120px !important;
+}
