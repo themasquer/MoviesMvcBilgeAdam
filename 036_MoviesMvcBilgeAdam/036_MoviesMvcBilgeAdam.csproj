@@ -188,6 +188,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
+    <Compile Include="Controllers\MoviesReportAjaxController.cs" />
     <Compile Include="Controllers\MoviesReportController.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
     <Compile Include="Entities\Director.cs" />
@@ -217,6 +218,7 @@
     <Compile Include="Models\MovieModel.cs" />
     <Compile Include="Models\MovieReportInnerJoinModel.cs" />
     <Compile Include="Models\MovieReportLeftOuterJoinModel.cs" />
+    <Compile Include="Models\MoviesReportAjaxIndexViewModel.cs" />
     <Compile Include="Models\MoviesReportIndexViewModel.cs" />
     <Compile Include="Models\ReviewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -753,6 +755,8 @@
     <Content Include="Views\Shared\_MoviesReportLayout.cshtml" />
     <Content Include="Views\MoviesReport\Export.cshtml" />
     <Content Include="Views\Shared\_MoviesReport.cshtml" />
+    <Content Include="Views\MoviesReportAjax\Index.cshtml" />
+    <Content Include="Views\Shared\_MoviesReportAjax.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
