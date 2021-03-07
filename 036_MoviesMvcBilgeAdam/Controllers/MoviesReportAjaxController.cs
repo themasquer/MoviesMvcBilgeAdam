@@ -94,5 +94,11 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
 
             return PartialView("_MoviesReportAjax", moviesReport);
         }
+
+        public ActionResult Json()
+        {
+            var model = movieReportService.GetLeftOuterJoinQuery().ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
     }
 }
