@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using _036_MoviesMvcBilgeAdam.Contexts;
 using _036_MoviesMvcBilgeAdam.Models;
 using _036_MoviesMvcBilgeAdam.Services;
+using OfficeOpenXml;
 
 namespace _036_MoviesMvcBilgeAdam.Controllers
 {
@@ -140,8 +141,111 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
                 //, OnlyMatchedValue = 1
             };
 
+            if (Session["MoviesReport"] != null)
+                Session.Remove("MoviesReport");
+            Session["MoviesReport"] = viewModel;
+
             //return View(innerJoinList);
             return View(viewModel);
+        }
+
+        public ActionResult Export()
+        {
+            MoviesReportIndexViewModel viewModel = new MoviesReportIndexViewModel();
+            MoviesReportIndexViewModel sessionModel;
+            if (Session["MoviesReport"] != null)
+            {
+                sessionModel = Session["MoviesReport"] as MoviesReportIndexViewModel;
+                viewModel.InnerJoinList = sessionModel.InnerJoinList;
+                viewModel.LeftOuterJoinList = sessionModel.LeftOuterJoinList;
+            }
+            return View(viewModel);
+        }
+
+        // Excel işlemleri için:
+        // https://spreadsheetlight.com/
+        // https://www.epplussoftware.com/
+        // https://www.c-sharpcorner.com/article/export-data-excel-in-asp-net-mvc/
+        public void MoviesReportExcel()
+        {
+            MoviesReportIndexViewModel viewModel = new MoviesReportIndexViewModel();
+            MoviesReportIndexViewModel sessionModel;
+            if (Session["MoviesReport"] != null)
+            {
+                sessionModel = Session["MoviesReport"] as MoviesReportIndexViewModel;
+                viewModel.InnerJoinList = sessionModel.InnerJoinList;
+                viewModel.LeftOuterJoinList = sessionModel.LeftOuterJoinList;
+                if (viewModel.InnerJoinList != null && viewModel.InnerJoinList.Count > 0)
+                {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    ExcelPackage excelPackage = new ExcelPackage();
+                    ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets.Add("Movies Report");
+                    excelWorksheet.Cells["A1"].Value = "Movie Name";
+                    excelWorksheet.Cells["B1"].Value = "Movie Production Year";
+                    excelWorksheet.Cells["C1"].Value = "Movie Box Office Return";
+                    excelWorksheet.Cells["D1"].Value = "Director Name";
+                    excelWorksheet.Cells["E1"].Value = "Is Director Retired?";
+                    excelWorksheet.Cells["F1"].Value = "Review Content";
+                    excelWorksheet.Cells["G1"].Value = "Review Rating";
+                    excelWorksheet.Cells["H1"].Value = "Reviewer";
+                    excelWorksheet.Cells["I1"].Value = "Review Date";
+                    int row = 2;
+                    foreach (var item in viewModel.InnerJoinList)
+                    {
+                        excelWorksheet.Cells[string.Format("A{0}", row)].Value = item.MovieName;
+                        excelWorksheet.Cells[string.Format("B{0}", row)].Value = item.MovieProductionYear;
+                        excelWorksheet.Cells[string.Format("C{0}", row)].Value = item.MovieBoxOfficeReturn;
+                        excelWorksheet.Cells[string.Format("D{0}", row)].Value = item.DirectorFullName;
+                        excelWorksheet.Cells[string.Format("E{0}", row)].Value = item.DirectorRetired;
+                        excelWorksheet.Cells[string.Format("F{0}", row)].Value = item.ReviewContent;
+                        excelWorksheet.Cells[string.Format("G{0}", row)].Value = item.ReviewRating;
+                        excelWorksheet.Cells[string.Format("H{0}", row)].Value = item.ReviewReviewer;
+                        excelWorksheet.Cells[string.Format("I{0}", row)].Value = item.ReviewDate;
+                        row++;
+                    }
+                    excelWorksheet.Cells["A:AZ"].AutoFitColumns();
+                    Response.Clear();
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.AddHeader("content-disposition", "attachment: filename=MoviesReport.xlsx");
+                    Response.BinaryWrite(excelPackage.GetAsByteArray());
+                    Response.End();
+                }
+                else if (viewModel.LeftOuterJoinList != null && viewModel.LeftOuterJoinList.Count > 0)
+                {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    ExcelPackage excelPackage = new ExcelPackage();
+                    ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets.Add("Movies Report");
+                    excelWorksheet.Cells["A1"].Value = "Movie Name";
+                    excelWorksheet.Cells["B1"].Value = "Movie Production Year";
+                    excelWorksheet.Cells["C1"].Value = "Movie Box Office Return";
+                    excelWorksheet.Cells["D1"].Value = "Director Name";
+                    excelWorksheet.Cells["E1"].Value = "Is Director Retired?";
+                    excelWorksheet.Cells["F1"].Value = "Review Content";
+                    excelWorksheet.Cells["G1"].Value = "Review Rating";
+                    excelWorksheet.Cells["H1"].Value = "Reviewer";
+                    excelWorksheet.Cells["I1"].Value = "Review Date";
+                    int row = 2;
+                    foreach (var item in viewModel.LeftOuterJoinList)
+                    {
+                        excelWorksheet.Cells[string.Format("A{0}", row)].Value = item.MovieName;
+                        excelWorksheet.Cells[string.Format("B{0}", row)].Value = item.MovieProductionYear;
+                        excelWorksheet.Cells[string.Format("C{0}", row)].Value = item.MovieBoxOfficeReturn;
+                        excelWorksheet.Cells[string.Format("D{0}", row)].Value = item.DirectorFullName;
+                        excelWorksheet.Cells[string.Format("E{0}", row)].Value = item.DirectorRetired;
+                        excelWorksheet.Cells[string.Format("F{0}", row)].Value = item.ReviewContent;
+                        excelWorksheet.Cells[string.Format("G{0}", row)].Value = item.ReviewRating;
+                        excelWorksheet.Cells[string.Format("H{0}", row)].Value = item.ReviewReviewer;
+                        excelWorksheet.Cells[string.Format("I{0}", row)].Value = item.ReviewDate;
+                        row++;
+                    }
+                    excelWorksheet.Cells["A:AZ"].AutoFitColumns();
+                    Response.Clear();
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.AddHeader("content-disposition", "attachment: filename=MoviesReport.xlsx");
+                    Response.BinaryWrite(excelPackage.GetAsByteArray());
+                    Response.End();
+                }
+            }
         }
     }
 }
