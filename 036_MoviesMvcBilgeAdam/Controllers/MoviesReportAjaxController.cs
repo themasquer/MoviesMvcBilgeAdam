@@ -23,12 +23,42 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
         }
 
         // GET: MoviesReportAjax
+        public ActionResult Index()
+        {
+            IQueryable<MovieReportLeftOuterJoinModel> leftOuterJoinQuery;
+            List<MovieReportLeftOuterJoinModel> leftOuterJoinList = null;
+
+            leftOuterJoinQuery = movieReportService.GetLeftOuterJoinQuery();
+
+            leftOuterJoinList = leftOuterJoinQuery.ToList();
+
+            List<SelectListItem> productionYearSelectListItems = new List<SelectListItem>();
+            for (int year = DateTime.Now.Year + 1; year >= 1930; year--)
+            {
+                productionYearSelectListItems.Add(new SelectListItem()
+                {
+                    Value = year.ToString(),
+                    Text = year.ToString()
+                });
+            }
+
+            MoviesReportAjaxIndexViewModel viewModel = new MoviesReportAjaxIndexViewModel()
+            {
+                LeftOuterJoinList = leftOuterJoinList,
+                ProductionYearMultiSelectList = new MultiSelectList(productionYearSelectListItems, "Value", "Text")
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
         public ActionResult Index(MoviesReportAjaxIndexViewModel moviesReport)
         {
             IQueryable<MovieReportLeftOuterJoinModel> leftOuterJoinQuery;
             List<MovieReportLeftOuterJoinModel> leftOuterJoinList = null;
 
             leftOuterJoinQuery = movieReportService.GetLeftOuterJoinQuery();
+
             if (!string.IsNullOrWhiteSpace(moviesReport.MovieName))
                 leftOuterJoinQuery = leftOuterJoinQuery.Where(model => model.MovieName.ToUpper().Contains(moviesReport.MovieName.ToUpper().Trim()));
             if (moviesReport.ProductionYears != null && moviesReport.ProductionYears.Count > 0)
@@ -60,23 +90,9 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
 
             leftOuterJoinList = leftOuterJoinQuery.ToList();
 
-            List<SelectListItem> productionYearSelectListItems = new List<SelectListItem>();
-            for (int year = DateTime.Now.Year + 1; year >= 1930; year--)
-            {
-                productionYearSelectListItems.Add(new SelectListItem()
-                {
-                    Value = year.ToString(),
-                    Text = year.ToString()
-                });
-            }
+            moviesReport.LeftOuterJoinList = leftOuterJoinList;
 
-            MoviesReportAjaxIndexViewModel viewModel = new MoviesReportAjaxIndexViewModel()
-            {
-                LeftOuterJoinList = leftOuterJoinList,
-                ProductionYearMultiSelectList = new MultiSelectList(productionYearSelectListItems, "Value", "Text")
-            };
-
-            return View(viewModel);
+            return PartialView("_MoviesReportAjax", moviesReport);
         }
     }
 }

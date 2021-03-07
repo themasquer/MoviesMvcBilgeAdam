@@ -3,11 +3,20 @@
 @{
     Layout = "~/Views/Shared/_MoviesReportLayout.cshtml";
     ViewBag.Title = "Movies Report | AJAX";
+
+    var ajaxOptions = new AjaxOptions()
+    {
+        AllowCache = false,
+        Url = Url.Action("Index", "MoviesReportAjax"),
+        HttpMethod = "post",
+        UpdateTargetId = "divMoviesReport",
+        InsertionMode = InsertionMode.Replace
+    };
 }
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("Index", "MoviesReport", FormMethod.Get, new { id = "fMoviesReport", autocomplete = "off" }))
+@using (Ajax.BeginForm(null, null, ajaxOptions, new { autocomplete = "off" }))
 {
     <div class="row paddingtop">
         <div class="col-2">
@@ -59,7 +68,11 @@
 <div class="row paddingtop">
     <div class="col-12">
 
-        @Html.Partial("_MoviesReportAjax", Model)
+        <div id="divMoviesReport">
+
+            @Html.Partial("_MoviesReportAjax", Model)
+
+        </div>
 
     </div>
 </div>
@@ -67,6 +80,8 @@
 @section scripts {
     @Styles.Render("~/plugins/datepickercss")
     @Scripts.Render("~/plugins/datepickerjs")
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 
     <script>
         $(document).ready(function () {

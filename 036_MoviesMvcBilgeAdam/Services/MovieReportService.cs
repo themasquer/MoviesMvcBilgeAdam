@@ -1,9 +1,8 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using _036_MoviesMvcBilgeAdam.Contexts;
+﻿using _036_MoviesMvcBilgeAdam.Contexts;
 using _036_MoviesMvcBilgeAdam.Entities;
 using _036_MoviesMvcBilgeAdam.Models;
+using System;
+using System.Linq;
 
 namespace _036_MoviesMvcBilgeAdam.Services
 {

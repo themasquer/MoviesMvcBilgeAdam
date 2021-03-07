@@ -49,7 +49,7 @@
                     @*<a class="nav-link" href="~/Home">Home <span class="sr-only">(current)</span></a>*@
                     @*<a class="nav-link" href="~/Movies">Movie List</a>*@
                     <!--<a class="nav-link" href="~/Movies/List"><i class="fa fa-film"></i> Movie List</a>
-                    </li>-->
+    </li>-->
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item active">
@@ -63,7 +63,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("Index", "Reviews")"><i class="fa fa-comments"></i> Review List</a>
                     </li>
-                    
+
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
                         <li class="nav-item">
@@ -71,22 +71,26 @@
                         </li>
                     }
 
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "MoviesReportAjax")"><i class="fa fa-list"></i> Movies Report | AJAX</a>
+                    </li>
+
                     @*<li class="nav-item">
-                            <a class="nav-link" href="/Home/Contact">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Home/About">About</a>
-                        </li>*@
+            <a class="nav-link" href="/Home/Contact">Contact</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/Home/About">About</a>
+        </li>*@
                     @*<li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Dropdown link
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </li>*@
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown link
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </li>*@
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

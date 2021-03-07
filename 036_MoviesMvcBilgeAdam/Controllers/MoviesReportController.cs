@@ -128,25 +128,17 @@ namespace _036_MoviesMvcBilgeAdam.Controllers
                 });
             }
 
-            MoviesReportIndexViewModel viewModel = new MoviesReportIndexViewModel()
-            {
-                InnerJoinList = innerJoinList,
-                LeftOuterJoinList = leftOuterJoinList,
-
-                //OnlyMatchedSelectList = new SelectList(onlyMatchedSelectListItems, "Value", "Text", "1")
-                OnlyMatchedSelectList = new SelectList(onlyMatchedSelectListItems, "Value", "Text"),
-
-                ProductionYearMultiSelectList = new MultiSelectList(productionYearSelectListItems, "Value", "Text")
-
-                //, OnlyMatchedValue = 1
-            };
+            moviesReport.InnerJoinList = innerJoinList;
+            moviesReport.LeftOuterJoinList = leftOuterJoinList;
+            moviesReport.OnlyMatchedSelectList = new SelectList(onlyMatchedSelectListItems, "Value", "Text");
+            moviesReport.ProductionYearMultiSelectList = new MultiSelectList(productionYearSelectListItems, "Value", "Text");
 
             if (Session["MoviesReport"] != null)
                 Session.Remove("MoviesReport");
-            Session["MoviesReport"] = viewModel;
+            Session["MoviesReport"] = moviesReport;
 
             //return View(innerJoinList);
-            return View(viewModel);
+            return View(moviesReport);
         }
 
         public ActionResult Export()
